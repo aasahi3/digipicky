@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин — DigiPicky</title>
+    <link rel="stylesheet" href="shop.css">
+</head>
+<body>
+
+<header>
+    <div class="top-bar">
+        <span>📧 pickthatdigimodel@mail.com</span>
+        <span>📞 +38 069 069 6767</span>
+     </div>
+        <nav class="main-nav">
+        <a href="index.html" class="logo">DIGI<span>PICKY</span></a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Головна</a></li>
+            <li><a href="#">Сторінки</a></li>
+            <li><a href="#">Портфоліо</a></li>
+            <li><a href="shop.html" class="active">Магазин</a></li>
+        </ul>
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+</header>
+
+<div class="page-hero">
+    <h1>Каталог <span>Моделей</span></h1>
+    <p>Оберіть модель та заповніть форму — ми зв'яжемось з вами</p>
+</div>
+
+<section class="catalog-section">
+    <h2>Наші Моделі</h2>
+    <p class="subtitle">Натисніть на картку щоб обрати модель. Можна обрати декілька.</p>
+
+    <div class="models-grid" id="modelsGrid">
+
+        <!-- Модель 1 -->
+        <div class="model-card">
+            <input type="checkbox" id="m1" value="Ян" onchange="updateSelected()">
+            <label for="m1">
+                <div class="card-img-wrap">
+                    <img src="https://i.pinimg.com/736x/19/21/44/19214496888b9a0cb54d89beb963d1ba.jpg" alt="Ян">
+                    <div class="card-badge">ПРЕМІУМ</div>
+                    <div class="select-overlay"><div class="check-icon">✓</div></div>
+                </div>
+                <div class="card-body">
+                    <h3>Ян</h3>
+                    <p class="model-meta">Luxury · High Fashion</p>
+                    <div class="model-price">5 500 грн <span>/ зйомка</span></div>
+                    <button class="select-btn">Обрати</button>
+                </div>
+            </label>
+        </div>
+
+        <!-- Модель 2 -->
+        <div class="model-card">
+            <input type="checkbox" id="m2" value="Кайден" onchange="updateSelected()">
+            <label for="m2">
+                <div class="card-img-wrap">
+                    <img src="https://i.pinimg.com/736x/53/a4/c3/53a4c3f71b87cb148b6cfe90d8fc55dc.jpg" alt="Кайден">
+                    <div class="card-badge">НОВИНКА</div>
+                    <div class="select-overlay"><div class="check-icon">✓</div></div>
+                </div>
+                <div class="card-body">
+                    <h3>Кайден</h3>
+                    <p class="model-meta">Рекламна · Lifestyle</p>
+                    <div class="model-price">3 000 грн <span>/ зйомка</span></div>
+                    <button class="select-btn">Обрати</button>
+                </div>
+            </label>
+        </div>
+
+        <!-- Модель 3 -->
+        <div class="model-card">
+            <input type="checkbox" id="m3" value="Каін" onchange="updateSelected()">
+            <label for="m3">
+                <div class="card-img-wrap">
+                    <img src="https://i.pinimg.com/736x/a1/d9/c5/a1d9c533a5e825da6042b57e765d2609.jpg" alt="Каін">
+                    <div class="select-overlay"><div class="check-icon">✓</div></div>
+                </div>
+                <div class="card-body">
+                    <h3>Каін</h3>
+                    <p class="model-meta">Editorial · Runway</p>
+                    <div class="model-price">4 200 грн <span>/ зйомка</span></div>
+                    <button class="select-btn">Обрати</button>
+                </div>
+            </label>
+        </div>
+
+        <!-- Модель 4 -->
+        <div class="model-card">
+            <input type="checkbox" id="m4" value="Хабело" onchange="updateSelected()">
+            <label for="m4">
+                <div class="card-img-wrap">
+                    <img src="https://i.pinimg.com/736x/04/4b/0e/044b0ebaf36ccad4f7801eac015ef372.jpg" alt="Хабело">
+                    <div class="card-badge">ПОПУЛЯРНА</div>
+                    <div class="select-overlay"><div class="check-icon">✓</div></div>
+                </div>
+                <div class="card-body">
+                    <h3>Хабело</h3>
+                    <p class="model-meta">Commercial · Beauty</p>
+                    <div class="model-price">2 800 грн <span>/ зйомка</span></div>
+                    <button class="select-btn">Обрати</button>
+                </div>
+            </label>
+        </div>
+
+        <!-- Модель 5  -->
+        <div class="model-card">
+            <input type="checkbox" id="m5" value="Ксандр" onchange="updateSelected()">
+            <label for="m5">
+                <div class="card-img-wrap">
+                    <img src="https://i.pinimg.com/736x/69/4b/36/694b361e7ac4bf708baac0cc3b32981e.jpg" alt="Ксандр">
+                    <div class="select-overlay"><div class="check-icon">✓</div></div>
+                </div>
+                <div class="card-body">
+                    <h3>Ксандр</h3>
+                    <p class="model-meta">Sports · Active</p>
+                    <div class="model-price">2 200 грн <span>/ зйомка</span></div>
+                    <button class="select-btn">Обрати</button>
+                </div>
+            </label>
+        </div>
+
+        <!-- Модель 6 -->
+        <div class="model-card">
+            <input type="checkbox" id="m6" value="Давид" onchange="updateSelected()">
+            <label for="m6">
+                <div class="card-img-wrap">
+                    <img src="https://i.pinimg.com/736x/11/fa/a6/11faa6bb6e638a62ca61827f18214eda.jpg" alt="Давид">
+                    <div class="card-badge">ТОП</div>
+                    <div class="select-overlay"><div class="check-icon">✓</div></div>
+                </div>
+                <div class="card-body">
+                    <h3>Давид</h3>
+                    <p class="model-meta">Портретна · Fashion</p>
+                    <div class="model-price">2 500 грн <span>/ зйомка</span></div>
+                    <button class="select-btn">Обрати</button>
+                </div>
+            </label>
+        </div>
+
+    </div>
+</section>
+
+<section class="form-section" id="bookingForm">
+    <h2>Форма Замовлення</h2>
+    <p class="subtitle">Заповніть форму і ми зв'яжемось з вами протягом 24 годин</p>
+
+    <div class="booking-form">
+
+        <div class="form-group">
+            <label>Ваше ім'я *</label>
+            <input type="text" id="clientName" placeholder="Введіть ім'я" required>
+        </div>
+
+        <div class="form-group">
+            <label>Телефон *</label>
+            <input type="tel" id="clientPhone" placeholder="+38 0XX XXX XXXX" required>
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="clientEmail" placeholder="your@email.com">
+        </div>
+
+        <div class="form-group">
+            <label>Дата зйомки</label>
+            <input type="date" id="shootDate">
+        </div>
+
+        <div class="form-group full">
+            <label>Обрані моделі</label>
+            <div class="selected-models-display" id="selectedDisplay">
+                <span style="color: #aaa;">Оберіть моделей вище ↑</span>
+            </div>
+        </div>
+
+        <div class="form-group full">
+            <label>Коментар / побажання</label>
+            <textarea id="clientComment" placeholder="Розкажіть про ваш проект, побажання до зйомки..."></textarea>
+        </div>
+
+        <button class="submit-btn" onclick="submitForm()">Надіслати заявку →</button>
+
+        <div class="success-msg" id="successMsg">
+            ✅ Дякуємо! Ваша заявка прийнята. Ми зв'яжемось з вами найближчим часом.
+        </div>
+
+    </div>
+</section>
+
+<footer class="footer">
+    <p>© 2026 DigiPicky — Сайт моделінгу</p>
+</footer>
+
+<script src="shop.js"></script>
+</body>
+</html>
