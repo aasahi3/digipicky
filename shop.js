@@ -11,11 +11,11 @@ function updateSelected() {
     }
 }
 
-async function submitForm() {
-    const nameInput  = document.getElementById('clientName');
-    const phoneInput = document.getElementById('clientPhone');
-    const emailInput = document.getElementById('clientEmail');
-    const dateInput  = document.getElementById('shootDate');
+function submitForm() {
+    const nameInput    = document.getElementById('clientName');
+    const phoneInput   = document.getElementById('clientPhone');
+    const emailInput   = document.getElementById('clientEmail');
+    const dateInput    = document.getElementById('shootDate');
     const commentInput = document.getElementById('clientComment');
 
     const name    = nameInput.value.trim();
@@ -29,7 +29,6 @@ async function submitForm() {
         return;
     }
 
-    // Зібрати обрані моделі
     const checkboxes = document.querySelectorAll('#modelsGrid input[type="checkbox"]:checked');
     const models = Array.from(checkboxes).map(cb => cb.value).join(', ') || 'Не обрано';
 
@@ -37,24 +36,17 @@ async function submitForm() {
     submitBtn.textContent = 'Надсилаємо...';
     submitBtn.disabled = true;
 
-    const FORMSPREE_URL = 'https://formspree.io/f/mnjoaogy';
+    const templateParams = {
+        name:    name,
+        phone:   phone,
+        email:   email   || 'не вказано',
+        date:    date    || 'не вказано',
+        models:  models,
+        comment: comment || 'не вказано'
+    };
 
-    try {
-        const response = await fetch(FORMSPREE_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({
-                "Ім'я":          name,
-                "Телефон":       phone,
-                "Email":         email || 'не вказано',
-                "Дата зйомки":   date  || 'не вказано',
-                "Обрані моделі": models,
-                "Коментар":      comment || 'не вказано'
-            })
-        });
-
-        if (response.ok) {
-            // Зберігаємо для автозаповнення наступного разу
+    emailjs.send('service_gfo0mav', 'template_3la7zjo', templateParams)
+        .then(() => {
             localStorage.setItem('savedName',  name);
             localStorage.setItem('savedPhone', phone);
 
@@ -77,14 +69,13 @@ async function submitForm() {
 
                 loadSavedData();
             }, 4000);
-        } else {
-            throw new Error('Server error');
-        }
-    } catch (err) {
-        alert('Помилка надсилання. Перевірте інтернет-з\'єднання та спробуйте ще раз.');
-        submitBtn.disabled    = false;
-        submitBtn.textContent = 'Надіслати заявку →';
-    }
+        })
+        .catch((error) => {
+            console.error('EmailJS error:', error);
+            alert('Помилка надсилання. Спробуйте ще раз.');
+            submitBtn.disabled    = false;
+            submitBtn.textContent = 'Надіслати заявку →';
+        });
 }
 
 function loadSavedData() {
