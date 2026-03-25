@@ -11,57 +11,92 @@ function updateSelected() {
     }
 }
 
-function submitForm() {
-    const nameInput = document.getElementById('clientName');
+async function submitForm() {
+    const nameInput  = document.getElementById('clientName');
     const phoneInput = document.getElementById('clientPhone');
-    
-    const name = nameInput.value.trim();
-    const phone = phoneInput.value.trim();
+    const emailInput = document.getElementById('clientEmail');
+    const dateInput  = document.getElementById('shootDate');
+    const commentInput = document.getElementById('clientComment');
+
+    const name    = nameInput.value.trim();
+    const phone   = phoneInput.value.trim();
+    const email   = emailInput.value.trim();
+    const date    = dateInput.value;
+    const comment = commentInput.value.trim();
 
     if (!name || !phone) {
         alert("Будь ласка, заповніть ім'я та телефон!");
         return;
     }
 
-    // --- ПАМ'ЯТЬ: Зберігаємо дані в браузері перед очищенням ---
-    localStorage.setItem('savedName', name);
-    localStorage.setItem('savedPhone', phone);
+    // Зібрати обрані моделі
+    const checkboxes = document.querySelectorAll('#modelsGrid input[type="checkbox"]:checked');
+    const models = Array.from(checkboxes).map(cb => cb.value).join(', ') || 'Не обрано';
 
-    document.getElementById('successMsg').style.display = 'block';
-    document.querySelector('.submit-btn').style.display = 'none';
+    const submitBtn = document.querySelector('.submit-btn');
+    submitBtn.textContent = 'Надсилаємо...';
+    submitBtn.disabled = true;
 
-    setTimeout(() => {
-        // Очищуємо форму
-        document.getElementById('clientName').value = '';
-        document.getElementById('clientPhone').value = '';
-        document.getElementById('clientEmail').value = '';
-        document.getElementById('shootDate').value = '';
-        document.getElementById('clientComment').value = '';
-        document.querySelectorAll('#modelsGrid input[type="checkbox"]').forEach(cb => cb.checked = false);
-        
-        updateSelected();
-        
-        document.getElementById('successMsg').style.display = 'none';
-        document.querySelector('.submit-btn').style.display = 'block';
-        
-        // Після очищення можемо знову підставити збережені дані як підказку
-        loadSavedData(); 
-    }, 4000);
+    const FORMSPREE_URL = 'https://formspree.io/f/mnjoaogy';
+
+    try {
+        const response = await fetch(FORMSPREE_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+                "Ім'я":          name,
+                "Телефон":       phone,
+                "Email":         email || 'не вказано',
+                "Дата зйомки":   date  || 'не вказано',
+                "Обрані моделі": models,
+                "Коментар":      comment || 'не вказано'
+            })
+        });
+
+        if (response.ok) {
+            // Зберігаємо для автозаповнення наступного разу
+            localStorage.setItem('savedName',  name);
+            localStorage.setItem('savedPhone', phone);
+
+            document.getElementById('successMsg').style.display = 'block';
+            submitBtn.style.display = 'none';
+
+            setTimeout(() => {
+                nameInput.value    = '';
+                phoneInput.value   = '';
+                emailInput.value   = '';
+                dateInput.value    = '';
+                commentInput.value = '';
+                document.querySelectorAll('#modelsGrid input[type="checkbox"]').forEach(cb => cb.checked = false);
+                updateSelected();
+
+                document.getElementById('successMsg').style.display = 'none';
+                submitBtn.style.display  = 'block';
+                submitBtn.disabled       = false;
+                submitBtn.textContent    = 'Надіслати заявку →';
+
+                loadSavedData();
+            }, 4000);
+        } else {
+            throw new Error('Server error');
+        }
+    } catch (err) {
+        alert('Помилка надсилання. Перевірте інтернет-з\'єднання та спробуйте ще раз.');
+        submitBtn.disabled    = false;
+        submitBtn.textContent = 'Надіслати заявку →';
+    }
 }
 
-// Функція для завантаження збережених даних
 function loadSavedData() {
-    const savedName = localStorage.getItem('savedName');
+    const savedName  = localStorage.getItem('savedName');
     const savedPhone = localStorage.getItem('savedPhone');
-
-    if (savedName) document.getElementById('clientName').value = savedName;
+    if (savedName)  document.getElementById('clientName').value  = savedName;
     if (savedPhone) document.getElementById('clientPhone').value = savedPhone;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- БУРГЕР-МЕНЮ ---
     const menuToggle = document.getElementById('mobile-menu');
-    const navLinks = document.getElementById('nav-links');
+    const navLinks   = document.getElementById('nav-links');
 
     if (menuToggle && navLinks) {
         menuToggle.addEventListener('click', () => {
@@ -76,12 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- ПАМ'ЯТЬ: Підставляємо дані при завантаженні сторінки ---
     loadSavedData();
 
     document.querySelectorAll('.model-card label').forEach(label => {
-        label.onclick = () => {
-            setTimeout(updateSelected, 10); 
-        };
+        label.onclick = () => setTimeout(updateSelected, 10);
     });
 });
